@@ -20,7 +20,6 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -42,9 +41,7 @@ public final class MainActivity extends AppCompatActivity {
     /** Item. */
     private String item;
     /** The item that's trying to be added. */
-    private TextView inputItem;
-    /** The number of items that's trying to be added. */
-    private TextView inputNumber;
+    private EditText inputItem;
     /** The variable that'll display if there's an invalid item entered. */
     private TextView invalidItemMessage = findViewById(R.id.text_missingItem);
 
@@ -85,78 +82,29 @@ public final class MainActivity extends AppCompatActivity {
         Button add = (Button) findViewById(R.id.button_add);
         add.setOnClickListener(new View.OnClickListener() {
             public void onClick(final View v) {
-                String input =
-                invalidItemMessage.setVisibility(View.INVISIBLE);
-                if (invalidItem()) {
-                    invalidItemMessage.setVisibility(View.VISIBLE);
-                    return;
-                } else {
-                    setItem(inputNumber.toString() + " " + inputItem.toString());
-                    itemList.add(this.item);
-                }
+                return;
             }
         });
-        txt = (TextView) findViewById(R.id.txt);
+        inputItem = (EditText) findViewById(R.id.text_enterItem);
         listView = (RecyclerView) findViewById(R.id.list_view);
 
     }
-    /** Function that figures out if the item is invalid or not. Returns true if it is invalid.
-     *
-     * @return true if the item is invalid.
-     */
-    public boolean invalidItem() {
-        inputItem = (TextView) findViewById(R.id.text_enterItem);
-        String input = inputItem.toString().trim();
-        if (input.length() == 0 || input.equals("Enter Item:")) {
-            return true;
-        }
-        return false;
-    }
-
-    /** Returns true if missing a number in the box.
-     *
-     * @return true if missing a number in the box.
-     */
-    public boolean missingNumber() {
-        inputNumber = (TextView) findViewById(R.id.text_number);
-        String value = inputNumber.toString().trim();
-        if (value.length() == 0) {
-            return true;
-        }
-        return false;
-    }
-
-    /** Returns true if the number entered is invalid.
-     *
-     * @return true if the number entered is invalid.
-     */
-    public boolean  invalidNumber() {
-        inputNumber = (TextView) findViewById(R.id.text_number);
-        String value = inputNumber.toString().trim();
-        int number = Integer.parseInt(value);
-        if (number <= 0 || number >= 100) {
-            return true;
-        }
-        return false;
-    }
-    /** Attempts to add an item to the list. */
-    public void addItem() {
+    /** Attempts to add. */
+    public void add() {
         invalidItemMessage.setVisibility(View.INVISIBLE);
-        missingNumberMessage.setVisibility(View.INVISIBLE);
-        invalidNumberMessage.setVisibility(View.INVISIBLE);
-        if (invalidItem()) {
+        String input = inputItem.getText().toString();
+        if (input.trim().length() <= 0 || input.equals(null)) {
             invalidItemMessage.setVisibility(View.VISIBLE);
             return;
-        } else if (missingNumber()) {
-            missingNumberMessage.setVisibility(View.VISIBLE);
-            return;
-        } else if (invalidNumber()) {
-            invalidNumberMessage.setVisibility(View.VISIBLE);
+        } else if (itemList.contains(input)) {
+            // Change
+            invalidItemMessage.setVisibility(View.VISIBLE);
             return;
         } else {
-            setItem(inputNumber.toString() + " " + inputItem.toString());
-            ((TextView) findViewById(R.id.txt)).setText(this.item);
-            itemList.add(this.item);
+            itemList.add(input);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this, R.layout., itemList);
+            listView.setAdapter(adapter);
+            ((EditText) findViewById(R.id.text_enterItem)).setText(" ");
         }
     }
     /**
