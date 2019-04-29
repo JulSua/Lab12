@@ -40,12 +40,12 @@
         android:id="@+id/button_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginRight="36dp"
         android:text="@string/add"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/enterNumber" />
 
     <Button
         android:id="@+id/button_clear"
@@ -61,31 +61,29 @@
     <ListView
         android:id="@+id/item_list"
         android:layout_width="395dp"
-        android:layout_height="319dp"
+        android:layout_height="254dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="60dp"
-        app:layout_constraintBottom_toTopOf="@+id/button_add"
+        android:layout_marginBottom="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_missingItem"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintHorizontal_bias="0.375"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/enterItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="19dp"
         android:layout_marginEnd="188dp"
         android:layout_marginRight="188dp"
         android:ems="10"
         android:hint="@string/enter_item"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/item_list" />
+        app:layout_constraintTop_toBottomOf="@+id/text_missingItem" />
 
     <EditText
         android:id="@+id/enterNumber"
@@ -93,23 +91,26 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="63dp"
         android:layout_marginLeft="63dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="19dp"
         android:layout_marginEnd="50dp"
         android:layout_marginRight="50dp"
+        android:layout_marginBottom="12dp"
         android:ems="10"
         android:hint="@string/enter_number"
         android:inputType="number"
+        app:layout_constraintBottom_toTopOf="@+id/button_add"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/enterItem"
-        app:layout_constraintTop_toBottomOf="@+id/item_list" />
+        app:layout_constraintTop_toBottomOf="@+id/text_missingNumber" />
 
     <EditText
         android:id="@+id/enterType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
-        android:layout_marginEnd="84dp"
-        android:layout_marginRight="84dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginRight="64dp"
         android:ems="10"
         android:hint="@string/enter_type"
         android:inputType="textPersonName"

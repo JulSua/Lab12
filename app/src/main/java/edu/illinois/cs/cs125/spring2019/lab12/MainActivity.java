@@ -22,6 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Main class for our UI design lab.
@@ -136,17 +137,6 @@ public final class MainActivity extends AppCompatActivity {
         return false;
     }
 
-    /** Checks if is already contained in the list.
-     *
-     * @return true if contains the item already.
-     */
-    public boolean containsItem() {
-        if (itemList.contains(enterItem.getText().toString())) {
-            return true;
-        }
-        return false;
-    }
-
     /** Checks if number entered is invalid.
      *
      * @return true if the number entered is invalid.
@@ -181,10 +171,6 @@ public final class MainActivity extends AppCompatActivity {
             missingType.setVisibility(View.VISIBLE);
             return;
         }
-        if (containsItem()) {
-            containsItem.setVisibility(View.VISIBLE);
-            return;
-        }
         if (isNumberInvalid()) {
             invalidNumber.setVisibility(View.VISIBLE);
             return;
@@ -192,10 +178,20 @@ public final class MainActivity extends AppCompatActivity {
         int value = Integer.parseInt(enterNumber.getText().toString());
         if (value > 1) {
             String input = enterType.getText().toString() + ": " + enterNumber.getText().toString() + " " + enterItem.getText().toString() + "s";
+            if (itemList.contains(input)) {
+                containsItem.setVisibility(View.VISIBLE);
+                return;
+            }
             itemList.add(input);
+            alphabetizeList(itemList);
         } else {
             String input = enterType.getText().toString() + ": " + enterNumber.getText().toString() + " " + enterItem.getText().toString();
+            if (itemList.contains(input)) {
+                containsItem.setVisibility(View.VISIBLE);
+                return;
+            }
             itemList.add(input);
+            alphabetizeList(itemList);
         }
         ListView itemListView = (ListView) findViewById(R.id.item_list);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, itemList);
@@ -207,6 +203,15 @@ public final class MainActivity extends AppCompatActivity {
         ListView itemListView = (ListView) findViewById(R.id.item_list);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, itemList);
         itemListView.setAdapter(adapter);
+    }
+
+    /** Alphabetizes an ArrayList of strings.
+     *
+     * @param list to alphabetize
+     * @return an alphabetized list.
+     */
+    public void alphabetizeList(final ArrayList<String> list) {
+        Collections.sort(list, String.CASE_INSENSITIVE_ORDER);
     }
     /**
      * Run when this activity is no longer visible.
