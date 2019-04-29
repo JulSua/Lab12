@@ -37,21 +37,21 @@ public final class MainActivity extends AppCompatActivity {
     /** List View.*/
     private ListView listView;
     /** Missing item text. */
-    private TextView missingItem = findViewById(R.id.text_missingItem);
+    private TextView missingItem;
     /** Missing number text. */
-    private TextView missingNumber = findViewById(R.id.text_missingNumber);
+    private TextView missingNumber;
     /**  Missing type text. */
-    private TextView missingType = findViewById(R.id.text_missingType);
+    private TextView missingType;
     /** Contains item text. */
-    private TextView containsItem = findViewById(R.id.text_containsItem);
+    private TextView containsItem;
     /** Invalid Number text. */
-    private TextView invalidNumber = findViewById(R.id.text_invalidNumber);
+    private TextView invalidNumber;
     /** Enter item box. */
-    private EditText enterItem = findViewById(R.id.enterItem);
+    private EditText enterItem;
     /** Enter number box. */
-    private EditText enterNumber = findViewById(R.id.enterNumber);
+    private EditText enterNumber;
     /** Enter type box. */
-    private EditText enterType = findViewById(R.id.enterType);
+    private EditText enterType;
     /** Minimum number allowed. */
     private int MIN_NUMBER = 0;
     /** Maximum number allowed. */
@@ -68,6 +68,14 @@ public final class MainActivity extends AppCompatActivity {
         requestQueue = Volley.newRequestQueue(this);
         setContentView(R.layout.activity_main);
         // startAPICall("192.17.96.8");
+        missingItem = findViewById(R.id.text_missingItem);
+        missingType = findViewById(R.id.text_missingType);
+        missingNumber = findViewById(R.id.text_missingNumber);
+        containsItem = findViewById(R.id.text_containsItem);
+        invalidNumber = findViewById(R.id.text_invalidNumber);
+        enterItem = findViewById(R.id.enterItem);
+        enterNumber = findViewById(R.id.enterNumber);
+        enterType = findViewById(R.id.enterType);
         Button settings = (Button) findViewById(R.id.button_settings);
         settings.setOnClickListener(new View.OnClickListener() {
             public void onClick(final View view) {
@@ -81,41 +89,73 @@ public final class MainActivity extends AppCompatActivity {
                 add();
             }
         });
+        Button clear = findViewById(R.id.button_clear);
+        clear.setOnClickListener(new View.OnClickListener() {
+            public void onClick(final View v) {
+                clearList();
+            }
+        });
         ListView itemListView = (ListView) findViewById(R.id.item_list);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, itemList);
         itemListView.setAdapter(adapter);
     }
-    /** Checks if is missing an item. */
+
+    /** Checks if is missing an item.
+     *
+     * @return true if missing an item.
+     */
     public boolean isMissingItem() {
-        if (enterItem.toString().equals(null) || enterItem.toString().trim().equals("")) {
+        String stringItem = enterItem.getText().toString();
+        if (enterItem.toString().equals(null) || stringItem.trim().equals("")) {
             return true;
         }
         return false;
     }
-    /** Checks if is missing a number. */
+
+    /** Checks if is missing a number.
+     *
+     * @return true if missing a number.
+     */
     public boolean isMissingNumber() {
-        if (enterNumber.toString().equals(null)) {
+        String stringNumber = enterNumber.getText().toString();
+        if (stringNumber.equals(null) || stringNumber.equals("") || stringNumber.equals(" ")) {
             return true;
         }
         return false;
     }
-    /** Checks if is missing a type. */
+
+    /** Checks if is missing a type.
+     *
+     * @return true if missing a type.
+     */
     public boolean isMissingType() {
-        if (enterType.toString().equals(null) || enterType.toString().trim().equals("")) {
+        String stringType = enterType.getText().toString();
+        if (enterType.toString().equals(null) || stringType.trim().equals("")) {
             return true;
         }
         return false;
     }
-    /** Checks if is already contained in the list. */
+
+    /** Checks if is already contained in the list.
+     *
+     * @return true if contains the item already.
+     */
     public boolean containsItem() {
-        if (itemList.contains(enterItem.toString())) {
+        if (itemList.contains(enterItem.getText().toString())) {
             return true;
         }
         return false;
     }
-    /** Checks if number entered is invalid. */
+
+    /** Checks if number entered is invalid.
+     *
+     * @return true if the number entered is invalid.
+     */
     public boolean isNumberInvalid() {
-        String value = enterNumber.toString().trim();
+        String value = enterNumber.getText().toString();
+        if (value.equals(null) || value.equals("") || value.equals(" ")) {
+            return true;
+        }
         int number = Integer.parseInt(value);
         if (number <= MIN_NUMBER || number > MAX_NUMBER) {
             return true;
@@ -149,8 +189,21 @@ public final class MainActivity extends AppCompatActivity {
             invalidNumber.setVisibility(View.VISIBLE);
             return;
         }
-        String input = enterType.toString() + ": " + enterNumber.toString() + " " + enterItem.toString();
-        itemList.add(input);
+        int value = Integer.parseInt(enterNumber.getText().toString());
+        if (value > 1) {
+            String input = enterType.getText().toString() + ": " + enterNumber.getText().toString() + " " + enterItem.getText().toString() + "s";
+            itemList.add(input);
+        } else {
+            String input = enterType.getText().toString() + ": " + enterNumber.getText().toString() + " " + enterItem.getText().toString();
+            itemList.add(input);
+        }
+        ListView itemListView = (ListView) findViewById(R.id.item_list);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, itemList);
+        itemListView.setAdapter(adapter);
+    }
+    /** Creates a new list/clear the existing one. */
+    public void clearList() {
+        itemList = new ArrayList<>();
         ListView itemListView = (ListView) findViewById(R.id.item_list);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, itemList);
         itemListView.setAdapter(adapter);

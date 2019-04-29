@@ -10,4 +10,5 @@
     <string name="enter_item">Enter item:</string>
     <string name="enter_type">Enter type:</string>
     <string name="enter_number">#</string>
+    <string name="clear_list">Clear List</string>
 </resources>
