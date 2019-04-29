@@ -15,7 +15,7 @@
         android:layout_marginStart="17dp"
         android:layout_marginLeft="17dp"
         android:layout_marginTop="16dp"
-        android:text="Settings"
+        android:text="@string/settings"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -28,7 +28,9 @@
         android:layout_marginTop="36dp"
         android:layout_marginEnd="176dp"
         android:layout_marginRight="176dp"
-        android:text="Grocery List"
+        android:text="@string/app_name"
+        android:textSize="30sp"
+        android:textStyle="bold"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,9 +43,66 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
-        android:text="Add Item"
+        android:text="@string/add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <ListView
+        android:id="@+id/item_list"
+        android:layout_width="395dp"
+        android:layout_height="455dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="60dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_add"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_missingItem" />
+
+    <EditText
+        android:id="@+id/enterItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="188dp"
+        android:layout_marginRight="188dp"
+        android:ems="10"
+        android:hint="@string/enter_item"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_list" />
+
+    <EditText
+        android:id="@+id/enterNumber"
+        android:layout_width="75dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="63dp"
+        android:layout_marginLeft="63dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginRight="50dp"
+        android:ems="10"
+        android:hint="@string/enter_number"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/enterItem"
+        app:layout_constraintTop_toBottomOf="@+id/item_list" />
+
+    <EditText
+        android:id="@+id/enterType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="84dp"
+        android:layout_marginRight="84dp"
+        android:ems="10"
+        android:hint="@string/enter_type"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toStartOf="@+id/button_add"
+        app:layout_constraintTop_toBottomOf="@+id/enterItem" />
 
     <TextView
         android:id="@+id/text_missingItem"
@@ -51,30 +110,61 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="164dp"
         android:layout_marginLeft="164dp"
+        android:layout_marginTop="23dp"
         android:layout_marginEnd="165dp"
         android:layout_marginRight="165dp"
-        android:text="Cannot add, Missing Item"
+        android:text="@string/missing_string"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="100dp" />
+        app:layout_constraintTop_toBottomOf="@+id/text_listTitle" />
 
-    <EditText
-        android:id="@+id/text_enterItem"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="98dp"
-        android:layout_marginLeft="98dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="98dp"
-        android:layout_marginRight="98dp"
-        android:layout_marginBottom="20dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Enter Item:"
-        app:layout_constraintBottom_toTopOf="@+id/button_add"
+    <TextView
+        android:id="@+id/text_missingNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="104dp"
+        android:layout_marginRight="104dp"
+        android:text="@string/missing_number"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_listTitle" />
+
+    <TextView
+        android:id="@+id/text_missingType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="123dp"
+        android:layout_marginLeft="123dp"
+        android:layout_marginTop="23dp"
+        android:text="@string/missing_type"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_missingItem" />
+        app:layout_constraintTop_toBottomOf="@+id/text_listTitle" />
+
+    <TextView
+        android:id="@+id/text_invalidNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="123dp"
+        android:layout_marginLeft="123dp"
+        android:layout_marginTop="23dp"
+        android:text="@string/invalid_number"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_listTitle" />
+
+    <TextView
+        android:id="@+id/text_containsItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="86dp"
+        android:layout_marginLeft="86dp"
+        android:layout_marginTop="23dp"
+        android:text="@string/contains_item"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_listTitle" />
 
 </android.support.constraint.ConstraintLayout>

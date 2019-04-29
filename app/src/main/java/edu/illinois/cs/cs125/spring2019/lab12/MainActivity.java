@@ -3,12 +3,12 @@ package edu.illinois.cs.cs125.spring2019.lab12;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -32,34 +32,30 @@ public final class MainActivity extends AppCompatActivity {
 
     /** Request queue for our API requests. */
     private static RequestQueue requestQueue;
-    /** List for the grocery list items. */
-    private ArrayList<String> itemList;
-    /** txt. */
-    private TextView txt;
-    /** List. */
-    private RecyclerView listView;
-    /** Item. */
-    private String item;
-    /** The item that's trying to be added. */
-    private EditText inputItem;
-    /** The variable that'll display if there's an invalid item entered. */
-    private TextView invalidItemMessage = findViewById(R.id.text_missingItem);
-
-    /** Sets the item as a string.
-     *
-     * @param setItem string to set.
-     */
-    public void setItem(final String setItem) {
-        this.item = setItem;
-    }
-
-    /** Gets the current item.
-     *
-     * @return the item.
-     */
-    public String getItem() {
-        return this.item;
-    }
+    /** List of items. */
+    private ArrayList<String> itemList = new ArrayList<>();
+    /** List View.*/
+    private ListView listView;
+    /** Missing item text. */
+    private TextView missingItem = findViewById(R.id.text_missingItem);
+    /** Missing number text. */
+    private TextView missingNumber = findViewById(R.id.text_missingNumber);
+    /**  Missing type text. */
+    private TextView missingType = findViewById(R.id.text_missingType);
+    /** Contains item text. */
+    private TextView containsItem = findViewById(R.id.text_containsItem);
+    /** Invalid Number text. */
+    private TextView invalidNumber = findViewById(R.id.text_invalidNumber);
+    /** Enter item box. */
+    private EditText enterItem = findViewById(R.id.enterItem);
+    /** Enter number box. */
+    private EditText enterNumber = findViewById(R.id.enterNumber);
+    /** Enter type box. */
+    private EditText enterType = findViewById(R.id.enterType);
+    /** Minimum number allowed. */
+    private int MIN_NUMBER = 0;
+    /** Maximum number allowed. */
+    private int MAX_NUMBER = 100;
     /**
      * Run when this activity comes to the foreground.
      *
@@ -82,30 +78,82 @@ public final class MainActivity extends AppCompatActivity {
         Button add = (Button) findViewById(R.id.button_add);
         add.setOnClickListener(new View.OnClickListener() {
             public void onClick(final View v) {
-                return;
+                add();
             }
         });
-        inputItem = (EditText) findViewById(R.id.text_enterItem);
-        listView = (RecyclerView) findViewById(R.id.list_view);
-
+        ListView itemListView = (ListView) findViewById(R.id.item_list);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, itemList);
+        itemListView.setAdapter(adapter);
     }
-    /** Attempts to add. */
-    public void add() {
-        invalidItemMessage.setVisibility(View.INVISIBLE);
-        String input = inputItem.getText().toString();
-        if (input.trim().length() <= 0 || input.equals(null)) {
-            invalidItemMessage.setVisibility(View.VISIBLE);
-            return;
-        } else if (itemList.contains(input)) {
-            // Change
-            invalidItemMessage.setVisibility(View.VISIBLE);
-            return;
-        } else {
-            itemList.add(input);
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this, R.layout., itemList);
-            listView.setAdapter(adapter);
-            ((EditText) findViewById(R.id.text_enterItem)).setText(" ");
+    /** Checks if is missing an item. */
+    public boolean isMissingItem() {
+        if (enterItem.toString().equals(null) || enterItem.toString().trim().equals("")) {
+            return true;
         }
+        return false;
+    }
+    /** Checks if is missing a number. */
+    public boolean isMissingNumber() {
+        if (enterNumber.toString().equals(null)) {
+            return true;
+        }
+        return false;
+    }
+    /** Checks if is missing a type. */
+    public boolean isMissingType() {
+        if (enterType.toString().equals(null) || enterType.toString().trim().equals("")) {
+            return true;
+        }
+        return false;
+    }
+    /** Checks if is already contained in the list. */
+    public boolean containsItem() {
+        if (itemList.contains(enterItem.toString())) {
+            return true;
+        }
+        return false;
+    }
+    /** Checks if number entered is invalid. */
+    public boolean isNumberInvalid() {
+        String value = enterNumber.toString().trim();
+        int number = Integer.parseInt(value);
+        if (number <= MIN_NUMBER || number > MAX_NUMBER) {
+            return true;
+        }
+        return false;
+    }
+    /** Attempts to add the item to the list. Otherwise, makes an error message visible. */
+    public void add() {
+        missingItem.setVisibility(View.INVISIBLE);
+        missingNumber.setVisibility(View.INVISIBLE);
+        missingType.setVisibility(View.INVISIBLE);
+        containsItem.setVisibility(View.INVISIBLE);
+        invalidNumber.setVisibility(View.INVISIBLE);
+        if (isMissingItem()) {
+            missingItem.setVisibility(View.VISIBLE);
+            return;
+        }
+        if (isMissingNumber()) {
+            missingNumber.setVisibility(View.VISIBLE);
+            return;
+        }
+        if (isMissingType()) {
+            missingType.setVisibility(View.VISIBLE);
+            return;
+        }
+        if (containsItem()) {
+            containsItem.setVisibility(View.VISIBLE);
+            return;
+        }
+        if (isNumberInvalid()) {
+            invalidNumber.setVisibility(View.VISIBLE);
+            return;
+        }
+        String input = enterType.toString() + ": " + enterNumber.toString() + " " + enterItem.toString();
+        itemList.add(input);
+        ListView itemListView = (ListView) findViewById(R.id.item_list);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, itemList);
+        itemListView.setAdapter(adapter);
     }
     /**
      * Run when this activity is no longer visible.

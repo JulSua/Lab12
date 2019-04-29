@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">A Grocery List</string>
+    <string name="settings">Settings</string>
+    <string name="add">Add Item</string>
+    <string name="missing_string">Cannot add, Missing Item</string>
+    <string name="missing_type">Cannot add, Missing Type</string>
+    <string name="missing_number">Cannot add, Missing Number</string>
+    <string name="invalid_number">Cannot add, invalid number</string>
+    <string name="contains_item">Cannot add, list already contains item</string>
+    <string name="enter_item">Enter item:</string>
+    <string name="enter_type">Enter type:</string>
+    <string name="enter_number">#</string>
 </resources>
