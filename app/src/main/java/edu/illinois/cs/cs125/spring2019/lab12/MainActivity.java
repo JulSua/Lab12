@@ -77,7 +77,7 @@ public final class MainActivity extends AppCompatActivity {
         enterItem = findViewById(R.id.enterItem);
         enterNumber = findViewById(R.id.enterNumber);
         enterType = findViewById(R.id.enterType);
-        Button settings = (Button) findViewById(R.id.button_settings);
+        Button settings = (Button) findViewById(R.id.button_trip);
         settings.setOnClickListener(new View.OnClickListener() {
             public void onClick(final View view) {
                 Intent myIntent = new Intent(view.getContext(), SettingsActivity.class);
