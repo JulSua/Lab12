@@ -3,9 +3,13 @@ package edu.illinois.cs.cs125.spring2019.lab12;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -16,6 +20,9 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 
 /**
  * Main class for our UI design lab.
@@ -26,7 +33,36 @@ public final class MainActivity extends AppCompatActivity {
 
     /** Request queue for our API requests. */
     private static RequestQueue requestQueue;
+    /** List for the grocery list items. */
+    private ArrayList<String> itemList;
+    /** txt. */
+    private TextView txt;
+    /** List. */
+    private RecyclerView listView;
+    /** Item. */
+    private String item;
+    /** The item that's trying to be added. */
+    private TextView inputItem;
+    /** The number of items that's trying to be added. */
+    private TextView inputNumber;
+    /** The variable that'll display if there's an invalid item entered. */
+    private TextView invalidItemMessage = findViewById(R.id.text_missingItem);
 
+    /** Sets the item as a string.
+     *
+     * @param setItem string to set.
+     */
+    public void setItem(final String setItem) {
+        this.item = setItem;
+    }
+
+    /** Gets the current item.
+     *
+     * @return the item.
+     */
+    public String getItem() {
+        return this.item;
+    }
     /**
      * Run when this activity comes to the foreground.
      *
@@ -46,16 +82,83 @@ public final class MainActivity extends AppCompatActivity {
                 startActivityForResult(myIntent, 0);
             }
         });
-        Button addItems = (Button) findViewById(R.id.button_addMenu);
-
-        addItems.setOnClickListener(new View.OnClickListener() {
-            @Override
+        Button add = (Button) findViewById(R.id.button_add);
+        add.setOnClickListener(new View.OnClickListener() {
             public void onClick(final View v) {
-                startActivity(new Intent(MainActivity.this, AddActivity.class));
+                String input =
+                invalidItemMessage.setVisibility(View.INVISIBLE);
+                if (invalidItem()) {
+                    invalidItemMessage.setVisibility(View.VISIBLE);
+                    return;
+                } else {
+                    setItem(inputNumber.toString() + " " + inputItem.toString());
+                    itemList.add(this.item);
+                }
             }
         });
+        txt = (TextView) findViewById(R.id.txt);
+        listView = (RecyclerView) findViewById(R.id.list_view);
+
+    }
+    /** Function that figures out if the item is invalid or not. Returns true if it is invalid.
+     *
+     * @return true if the item is invalid.
+     */
+    public boolean invalidItem() {
+        inputItem = (TextView) findViewById(R.id.text_enterItem);
+        String input = inputItem.toString().trim();
+        if (input.length() == 0 || input.equals("Enter Item:")) {
+            return true;
+        }
+        return false;
     }
 
+    /** Returns true if missing a number in the box.
+     *
+     * @return true if missing a number in the box.
+     */
+    public boolean missingNumber() {
+        inputNumber = (TextView) findViewById(R.id.text_number);
+        String value = inputNumber.toString().trim();
+        if (value.length() == 0) {
+            return true;
+        }
+        return false;
+    }
+
+    /** Returns true if the number entered is invalid.
+     *
+     * @return true if the number entered is invalid.
+     */
+    public boolean  invalidNumber() {
+        inputNumber = (TextView) findViewById(R.id.text_number);
+        String value = inputNumber.toString().trim();
+        int number = Integer.parseInt(value);
+        if (number <= 0 || number >= 100) {
+            return true;
+        }
+        return false;
+    }
+    /** Attempts to add an item to the list. */
+    public void addItem() {
+        invalidItemMessage.setVisibility(View.INVISIBLE);
+        missingNumberMessage.setVisibility(View.INVISIBLE);
+        invalidNumberMessage.setVisibility(View.INVISIBLE);
+        if (invalidItem()) {
+            invalidItemMessage.setVisibility(View.VISIBLE);
+            return;
+        } else if (missingNumber()) {
+            missingNumberMessage.setVisibility(View.VISIBLE);
+            return;
+        } else if (invalidNumber()) {
+            invalidNumberMessage.setVisibility(View.VISIBLE);
+            return;
+        } else {
+            setItem(inputNumber.toString() + " " + inputItem.toString());
+            ((TextView) findViewById(R.id.txt)).setText(this.item);
+            itemList.add(this.item);
+        }
+    }
     /**
      * Run when this activity is no longer visible.
      */
