@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="176dp"
         android:layout_marginLeft="176dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="64dp"
         android:layout_marginEnd="176dp"
         android:layout_marginRight="176dp"
         android:text="@string/app_name"
@@ -22,6 +22,7 @@
         android:textStyle="bold"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.477"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -76,21 +77,19 @@
         android:id="@+id/enterItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="19dp"
-        android:layout_marginEnd="188dp"
-        android:layout_marginRight="188dp"
         android:ems="10"
         android:hint="@string/enter_item"
         android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_missingItem" />
 
     <EditText
         android:id="@+id/enterNumber"
         android:layout_width="75dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="63dp"
-        android:layout_marginLeft="63dp"
         android:layout_marginTop="19dp"
         android:layout_marginEnd="50dp"
         android:layout_marginRight="50dp"
@@ -100,21 +99,19 @@
         android:inputType="number"
         app:layout_constraintBottom_toTopOf="@+id/button_add"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/enterItem"
         app:layout_constraintTop_toBottomOf="@+id/text_missingNumber" />
 
     <EditText
         android:id="@+id/enterType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="12dp"
-        android:layout_marginEnd="64dp"
-        android:layout_marginRight="64dp"
         android:ems="10"
         android:hint="@string/enter_type"
         android:inputType="textPersonName"
-        app:layout_constraintEnd_toStartOf="@+id/button_add"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/enterItem" />
 
     <TextView

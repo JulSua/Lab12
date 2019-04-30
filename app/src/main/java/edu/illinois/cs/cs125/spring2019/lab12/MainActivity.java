@@ -1,9 +1,11 @@
 package edu.illinois.cs.cs125.spring2019.lab12;
 
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -11,15 +13,10 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
+
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -57,6 +54,18 @@ public final class MainActivity extends AppCompatActivity {
     private int MIN_NUMBER = 0;
     /** Maximum number allowed. */
     private int MAX_NUMBER = 100;
+    /**
+     * sensor manager.
+     */
+    private SensorManager sensorManager;
+    /**
+     * accelerometer.
+     */
+    private Sensor accelerometer;
+    /**
+     * shake detector.
+     */
+    private ShakeDetector shakeDetector;
     /**
      * Run when this activity comes to the foreground.
      *
@@ -99,6 +108,16 @@ public final class MainActivity extends AppCompatActivity {
         ListView itemListView = (ListView) findViewById(R.id.item_list);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, itemList);
         itemListView.setAdapter(adapter);
+
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        shakeDetector = new ShakeDetector();
+        shakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
+            @Override
+            public void onShake(int count) {
+                handleShakeEvent(count);
+            }
+        });
     }
 
     /** Checks if is missing an item.
@@ -218,48 +237,22 @@ public final class MainActivity extends AppCompatActivity {
      */
     @Override
     protected void onPause() {
+        sensorManager.unregisterListener(shakeDetector);
         super.onPause();
     }
-
-    /**
-     * Make a call to the IP geolocation API.
-     *
-     * @param ipAddress IP address to look up
-     */
-    void startAPICall(final String ipAddress) {
-        try {
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                    Request.Method.GET,
-                    "https://ipinfo.io/" + ipAddress + "/json",
-                    null,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(final JSONObject response) {
-                            apiCallDone(response);
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(final VolleyError error) {
-                            Log.e(TAG, error.toString());
-                        }
-                    });
-            jsonObjectRequest.setShouldCache(false);
-            requestQueue.add(jsonObjectRequest);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    @Override
+    public void onResume() {
+        super.onResume();
+        sensorManager.registerListener(shakeDetector, accelerometer, sensorManager.SENSOR_DELAY_UI);
     }
 
     /**
-     * Handle the response from our IP geolocation API.
-     *
-     * @param response response from our IP geolocation API.
+     * clears list when shakes twice.
+     * @param count number of shakes.
      */
-    void apiCallDone(final JSONObject response) {
-        try {
-            Log.d(TAG, response.toString(2));
-            // Example of how to pull a field off the returned JSON object
-            Log.i(TAG, response.get("hostname").toString());
-        } catch (JSONException ignored) { }
+    public void handleShakeEvent(final int count) {
+        if (count >= 2) {
+            clearList();
+        }
     }
 }
